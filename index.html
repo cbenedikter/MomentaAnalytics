@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OneSignal User Update Tool</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">OneSignal Tools</div>
+            <div class="subtitle">User Management & API Utilities</div>
+        </div>
+
+        <div class="main-card">
+            <div class="form-group">
+                <label for="operation">Select Operation:</label>
+                <select id="operation" onchange="showConfig()">
+                    <option value="">Choose an operation...</option>
+                    <option value="user_updates">Make User Updates</option>
+                </select>
+            </div>
+
+            <div id="config-section" class="config-section">
+                <h3 style="margin-bottom: 20px; color: #667eea;">Configuration</h3>
+                
+                <div class="conversion-section">
+                    <h4 style="margin-bottom: 15px; color: #333;">Conversion %</h4>
+                    <div class="conversion-input">
+                        <input type="number" id="conversion-percentage" min="1" max="100" placeholder="Enter conversion % (1-100)" value="5">
+                        <button class="apply-btn" onclick="applyConversion()">Apply</button>
+                    </div>
+                    <div id="conversion-status" class="conversion-status"></div>
+                </div>
+
+                <div class="tag-section">
+                    <h4 style="margin-bottom: 15px; color: #333;">Data Tags</h4>
+                    <button class="add-tag-btn" onclick="addTagField()">+ Add Tag</button>
+                    <div id="tag-container">
+                        <div class="tag-item">
+                            <input type="text" placeholder="Key" class="tag-key" value="ai_assistant_chat_count">
+                            <input type="text" placeholder="Value" class="tag-value" value="1">
+                            <button class="remove-tag" onclick="removeTag(this)">Remove</button>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="run-btn" onclick="runScript()" id="run-btn">
+                    🚀 Run User Updates
+                </button>
+            </div>
+
+            <div id="progress-section" class="progress-section">
+                <h4 style="margin-bottom: 15px;">Progress</h4>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <span id="progress-text">Ready to start...</span>
+                </div>
+                <div class="log-output" id="log-output"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
