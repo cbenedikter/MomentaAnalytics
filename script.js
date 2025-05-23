@@ -35,19 +35,27 @@ let API_KEY;
 
 // Load configuration
 function loadConfig() {
+    console.log('Loading configuration...');
     if (typeof config === 'undefined') {
+        console.error('Configuration object not found');
         log('❌ Configuration file not found. Please create a config.js file with your OneSignal credentials.', 'error');
         return false;
     }
     
+    console.log('Config object found:', config);
     APP_ID = config.APP_ID;
     API_KEY = config.API_KEY;
     
+    console.log('APP_ID:', APP_ID);
+    console.log('API_KEY:', API_KEY ? 'Present' : 'Missing');
+    
     if (!APP_ID || !API_KEY || APP_ID === 'YOUR_APP_ID_HERE' || API_KEY === 'YOUR_API_KEY_HERE') {
+        console.error('Invalid credentials');
         log('❌ Please configure your OneSignal credentials in config.js', 'error');
         return false;
     }
     
+    console.log('Configuration loaded successfully');
     return true;
 }
 
@@ -114,8 +122,11 @@ function updateProgress(current, total) {
 }
 
 async function runScript() {
+    console.log('Starting script execution...');
+    
     // Check configuration first
     if (!loadConfig()) {
+        console.error('Configuration check failed');
         return;
     }
 
@@ -133,7 +144,10 @@ async function runScript() {
         }
     });
 
+    console.log('Tags collected:', tags);
+
     if (!hasValidTags) {
+        console.error('No valid tags found');
         alert('Please add at least one tag');
         return;
     }
@@ -141,6 +155,9 @@ async function runScript() {
     // Calculate number of users to update based on conversion percentage
     const numUsersToUpdate = Math.ceil((FIXED_EXTERNAL_IDS.length * selectedConversionPercentage) / 100);
     const selectedUsers = FIXED_EXTERNAL_IDS.slice(0, numUsersToUpdate);
+
+    console.log('Number of users to update:', numUsersToUpdate);
+    console.log('Selected users:', selectedUsers);
 
     // Show progress section
     document.getElementById('progress-section').style.display = 'block';
@@ -165,6 +182,7 @@ async function runScript() {
         for (const externalId of batch) {
             try {
                 const url = `https://api.onesignal.com/apps/${APP_ID}/users/by/external_id/${externalId}`;
+                console.log('Making API request to:', url);
                 
                 const response = await fetch(url, {
                     method: 'PATCH',
@@ -179,6 +197,10 @@ async function runScript() {
                     })
                 });
 
+                console.log('API Response status:', response.status);
+                const responseText = await response.text();
+                console.log('API Response:', responseText);
+
                 processed++;
                 updateProgress(processed, numUsersToUpdate);
 
@@ -186,11 +208,11 @@ async function runScript() {
                     log(`✅ ${externalId} updated successfully`, 'success');
                     successCount++;
                 } else {
-                    const errorText = await response.text();
-                    log(`❌ ${externalId} failed: ${response.status} ${errorText}`, 'error');
+                    log(`❌ ${externalId} failed: ${response.status} ${responseText}`, 'error');
                     errorCount++;
                 }
             } catch (error) {
+                console.error('Error processing user:', error);
                 processed++;
                 updateProgress(processed, numUsersToUpdate);
                 log(`❌ ${externalId} failed: ${error.message}`, 'error');
