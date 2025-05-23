@@ -29,24 +29,28 @@ const FIXED_EXTERNAL_IDS = [
     "S3C5E9P4H8I7", "T4D6F0Q5I9J8", "U5E7G1R6J0K9", "V6F8H2S7K1L0"
 ];
 
-// OneSignal credentials will be loaded from config.js
 let APP_ID;
 let API_KEY;
 
 // Load configuration
 function loadConfig() {
     console.log('Loading configuration...');
+    if (typeof config === 'undefined') {
+        console.error('Configuration object not found');
+        log('❌ Configuration file not found. Please create a config.js file with your OneSignal credentials.', 'error');
+        return false;
+    }
     
-    // Get credentials from UI
-    APP_ID = document.getElementById('app-id').value.trim();
-    API_KEY = document.getElementById('api-key').value.trim();
+    console.log('Config object found:', config);
+    APP_ID = config.APP_ID;
+    API_KEY = config.API_KEY;
     
     console.log('APP_ID:', APP_ID);
     console.log('API_KEY:', API_KEY ? 'Present' : 'Missing');
     
-    if (!APP_ID || !API_KEY) {
+    if (!APP_ID || !API_KEY || APP_ID === 'YOUR_APP_ID_HERE' || API_KEY === 'YOUR_API_KEY_HERE') {
         console.error('Invalid credentials');
-        log('❌ Please enter your OneSignal credentials', 'error');
+        log('❌ Please configure your OneSignal credentials in config.js', 'error');
         return false;
     }
     
