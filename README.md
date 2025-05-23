@@ -1,14 +1,19 @@
-# OneSignal User Update Tool
+# Momenta Analytics - OneSignal User Update Tool
 
-A web-based tool for managing OneSignal user updates, allowing you to apply tags and track conversion rates across your user base.
+A web-based tool for managing OneSignal user updates, allowing you to apply tags and track conversion rates across your user base. This tool is designed to help you manage user data in batches with controlled conversion rates.
+
+## Live Demo
+
+Visit the live demo: [Momenta Analytics Tool](https://cbenedikter.github.io/MomentaAnalytics/)
 
 ## Features
 
 - Apply tags to OneSignal users in batches
-- Control conversion rate percentage
+- Control conversion rate percentage (default: 5%)
 - Process updates in 3 batches with 1-minute intervals
 - Real-time progress tracking
 - Detailed logging of operations
+- Secure credential management
 
 ## Setup
 
@@ -51,6 +56,10 @@ The tool will:
 - `script.js` - Core functionality
 - `styles.css` - Styling
 - `config.js` - Configuration file (not included in repository)
+
+## Development
+
+This project is built with vanilla JavaScript and HTML/CSS. No build process is required.
 
 ## License
 
