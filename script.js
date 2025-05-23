@@ -36,22 +36,17 @@ let API_KEY;
 // Load configuration
 function loadConfig() {
     console.log('Loading configuration...');
-    if (typeof config === 'undefined') {
-        console.error('Configuration object not found');
-        log('❌ Configuration file not found. Please create a config.js file with your OneSignal credentials.', 'error');
-        return false;
-    }
     
-    console.log('Config object found:', config);
-    APP_ID = config.APP_ID;
-    API_KEY = config.API_KEY;
+    // Get credentials from UI
+    APP_ID = document.getElementById('app-id').value.trim();
+    API_KEY = document.getElementById('api-key').value.trim();
     
     console.log('APP_ID:', APP_ID);
     console.log('API_KEY:', API_KEY ? 'Present' : 'Missing');
     
-    if (!APP_ID || !API_KEY || APP_ID === 'YOUR_APP_ID_HERE' || API_KEY === 'YOUR_API_KEY_HERE') {
+    if (!APP_ID || !API_KEY) {
         console.error('Invalid credentials');
-        log('❌ Please configure your OneSignal credentials in config.js', 'error');
+        log('❌ Please enter your OneSignal credentials', 'error');
         return false;
     }
     
