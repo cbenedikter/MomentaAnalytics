@@ -14,11 +14,23 @@ A web-based tool for managing OneSignal user updates, allowing you to apply tags
 
 1. Clone this repository:
 ```bash
-git clone https://github.com/yourusername/onesignal-user-update-tool.git
-cd onesignal-user-update-tool
+git clone https://github.com/cbenedikter/MomentaAnalytics.git
+cd MomentaAnalytics
 ```
 
-2. Open `index.html` in your web browser
+2. Create a `config.js` file in the root directory with your OneSignal credentials:
+```javascript
+const config = {
+    APP_ID: "YOUR_APP_ID_HERE",
+    API_KEY: "YOUR_API_KEY_HERE"
+};
+```
+
+3. Open `index.html` in your web browser
+
+## Security Note
+
+The `config.js` file is excluded from git to protect your API credentials. Never commit this file to version control. Each user should create their own `config.js` file with their credentials.
 
 ## Usage
 
@@ -33,17 +45,12 @@ The tool will:
 - Show real-time progress and logs
 - Display a summary upon completion
 
-## Configuration
-
-The tool uses the following OneSignal credentials:
-- App ID: `5e605fcd-de88-4b0a-a5eb-5c18b84d52f3`
-- API Key: Configured in the script
-
 ## Files
 
 - `index.html` - Main interface
 - `script.js` - Core functionality
 - `styles.css` - Styling
+- `config.js` - Configuration file (not included in repository)
 
 ## License
 

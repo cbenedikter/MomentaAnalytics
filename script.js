@@ -29,9 +29,27 @@ const FIXED_EXTERNAL_IDS = [
     "S3C5E9P4H8I7", "T4D6F0Q5I9J8", "U5E7G1R6J0K9", "V6F8H2S7K1L0"
 ];
 
-// OneSignal credentials
-const APP_ID = "5e605fcd-de88-4b0a-a5eb-5c18b84d52f3";
-const API_KEY = "os_v2_app_lzqf7to6rbfqvjpllqmlqtks6p27gystfmiurmv2i5jbtkxlqrgwfi4whpacwylxa74wwuehxjh5wowj3rmajrrnjgcuxvsnqxf5yxq";
+// OneSignal credentials will be loaded from config.js
+let APP_ID;
+let API_KEY;
+
+// Load configuration
+function loadConfig() {
+    if (typeof config === 'undefined') {
+        log('❌ Configuration file not found. Please create a config.js file with your OneSignal credentials.', 'error');
+        return false;
+    }
+    
+    APP_ID = config.APP_ID;
+    API_KEY = config.API_KEY;
+    
+    if (!APP_ID || !API_KEY || APP_ID === 'YOUR_APP_ID_HERE' || API_KEY === 'YOUR_API_KEY_HERE') {
+        log('❌ Please configure your OneSignal credentials in config.js', 'error');
+        return false;
+    }
+    
+    return true;
+}
 
 let selectedConversionPercentage = 5;
 
@@ -96,6 +114,11 @@ function updateProgress(current, total) {
 }
 
 async function runScript() {
+    // Check configuration first
+    if (!loadConfig()) {
+        return;
+    }
+
     // Get tags
     const tagItems = document.querySelectorAll('.tag-item');
     const tags = {};
