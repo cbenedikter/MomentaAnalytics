@@ -29,6 +29,8 @@ const FIXED_EXTERNAL_IDS = [
     "S3C5E9P4H8I7", "T4D6F0Q5I9J8", "U5E7G1R6J0K9", "V6F8H2S7K1L0"
 ];
 
+const TRUE_AUDIENCE_SIZE = 235; // The true audience size in OneSignal
+
 let APP_ID;
 let API_KEY;
 
@@ -151,8 +153,19 @@ async function runScript() {
         return;
     }
 
-    // Calculate number of users to update based on conversion percentage
-    const numUsersToUpdate = Math.ceil((FIXED_EXTERNAL_IDS.length * selectedConversionPercentage) / 100);
+    // Always read the current value from the input
+    const conversionInput = document.getElementById('conversion-percentage');
+    const percentage = parseInt(conversionInput.value);
+
+    // Caveat: No more than 40% conversion rate
+    if (percentage > 40) {
+        alert('Conversion rate cannot be higher than 40%. Please enter a value between 1 and 40.');
+        return;
+    }
+
+    // Calculate number of users to update based on true audience size
+    const requestedNumToUpdate = Math.ceil((TRUE_AUDIENCE_SIZE * percentage) / 100);
+    const numUsersToUpdate = Math.min(requestedNumToUpdate, FIXED_EXTERNAL_IDS.length);
     const selectedUsers = FIXED_EXTERNAL_IDS.slice(0, numUsersToUpdate);
 
     console.log('Number of users to update:', numUsersToUpdate);
@@ -164,7 +177,7 @@ async function runScript() {
     document.getElementById('log-output').innerHTML = '';
 
     log('🚀 Starting tag update process...', 'info');
-    log(`📊 Will update ${numUsersToUpdate} out of ${FIXED_EXTERNAL_IDS.length} users (${selectedConversionPercentage}% conversion)`, 'info');
+    log(`📊 Will update ${numUsersToUpdate} out of ${FIXED_EXTERNAL_IDS.length} users (${percentage}% conversion)`, 'info');
     log(`🏷️  Tags to apply: ${JSON.stringify(tags)}`, 'info');
 
     let processed = 0;
